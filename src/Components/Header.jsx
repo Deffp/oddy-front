@@ -5,24 +5,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Auth } from '../Pages/Auth';
 
 const useStyles = makeStyles(() => ({
-	root: {
-		background: '#409CE5',
-	},
-	toolbar: {
-		justifyContent: 'flex-end',
-	},
+  root: {
+    background: '#409CE5',
+  },
+  toolbar: {
+    justifyContent: 'flex-end',
+  },
 }));
 
 const Header = () => {
-	const classes = useStyles();
+  const classes = useStyles();
 
-	return (
-		<AppBar className={ classes.root }>
-			<Toolbar className={ classes.toolbar }>
-				<Auth />
-			</Toolbar>
-		</AppBar>
-	);
+  return (
+    <AppBar className={ classes.root }>
+      <Toolbar className={ classes.toolbar }>
+        <Auth />
+      </Toolbar>
+    </AppBar>
+  );
 };
 
 export { Header };

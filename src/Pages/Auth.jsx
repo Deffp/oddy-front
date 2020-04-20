@@ -5,80 +5,80 @@ import adminAPI from "../api/adminAPI";
 
 class Auth extends Component {
 
-	state = {
-		isLogin: false,
-	}
+  state = {
+    isLogin: false,
+  }
 
-	authWindow = null;
+  authWindow = null;
 
-	checkLogin = () => {
-		if(sessionStorage.getItem('token')) {
-			this.setState({
-				isLogin: true,
-			});
-		};
-	};
+  checkLogin = () => {
+    if(sessionStorage.getItem('token')) {
+      this.setState({
+        isLogin: true,
+      });
+    };
+  };
 
-	componentWillMount() {
-		this.checkLogin();
-	}
+  componentWillMount() {
+    this.checkLogin();
+  }
 
-	async componentDidMount() {
-		window.addEventListener("message", this.handlerPostMessage);
-	}
-	
-	singIn = async () => {
-		const { windowWidth = 500, windowHeight = 500 } = this.props;
-		const authUrl = await adminAPI.getGoogleAuthURL();
-		this.authWindow = window.open(
-			authUrl,
-			"",
-			`width=${windowWidth},height=${windowHeight}`
-		);
-	};
+  async componentDidMount() {
+    window.addEventListener("message", this.handlerPostMessage);
+  }
 
-	logOut = () => {
-		sessionStorage.removeItem('token');
-		this.setState({
-			isLogin: false,
-		})
-	}
+  singIn = async () => {
+    const { windowWidth = 500, windowHeight = 500 } = this.props;
+    const authUrl = await adminAPI.getGoogleAuthURL();
+    this.authWindow = window.open(
+      authUrl,
+      "",
+      `width=${windowWidth},height=${windowHeight}`
+    );
+  };
 
-	handleGoogleCode = async (code) => {
-		const token = await adminAPI.getAccessToken(code);
-		this.authWindow.close();
-		sessionStorage.setItem("token", token);
-	};
+  logOut = () => {
+    sessionStorage.removeItem('token');
+    this.setState({
+      isLogin: false,
+    })
+  }
 
-	handlerPostMessage = async (event) => {
-		if (event.origin !== window.location.origin) {
-			return;
-		}
+  handleGoogleCode = async (code) => {
+    const token = await adminAPI.getAccessToken(code);
+    this.authWindow.close();
+    sessionStorage.setItem("token", token);
+  };
 
-		const { code } = event.data;
+  handlerPostMessage = async (event) => {
+    if (event.origin !== window.location.origin) {
+      return;
+  }
 
-		if (code) {
-			return this.handleGoogleCode(code);
-		}
-	};
+  const { code } = event.data;
 
-	componentWillUnmount() {
-		window.removeEventListener("message", this.handlerPostMessage);
-	}
+    if (code) {
+      return this.handleGoogleCode(code);
+    }
+  };
 
-	render() {
-		const { isLogin } = this.state;
+  componentWillUnmount() {
+    window.removeEventListener("message", this.handlerPostMessage);
+  }
 
-		return (
-			<>
-				{
-					!isLogin ?
-					<div onClick={ this.singIn }><LoginBtn /></div> : 
-					<div onClick={ this.logOut }><LogOutBtn /></div> 
-				}
-			</>
-		);
-	};
+  render() {
+    const { isLogin } = this.state;
+
+    return (
+      <>
+        {
+          !isLogin ?
+          <div onClick={ this.singIn }><LoginBtn /></div> : 
+          <div onClick={ this.logOut }><LogOutBtn /></div> 
+        }
+      </>
+    );
+  };
 };
 
 export { Auth };
