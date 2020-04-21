@@ -1,13 +1,21 @@
 import React from 'react';
-import { Drawer, List, ListItem, 
-  ListItemText, } from '@material-ui/core';
+import { Drawer, List, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { DrawerListItem } from './DrawerListItem';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: '240px',
     background: '#18202B',
   },
+  titleLogo: {
+    background: '#232F3F',
+    textAlign: 'center',
+    color: '#ACB1B5',
+    fontWeight: 600,
+    userSelect: 'none',
+  }
 }));
 
 const RootDrawer = () => {
@@ -19,10 +27,11 @@ const RootDrawer = () => {
     }}
     variant='permanent'
     >
+      <Typography variant='h2' className={ classes.titleLogo }>
+        Oddy
+      </Typography>
       <List>
-        <ListItem>
-          <ListItemText primary='Admins' />
-        </ListItem>
+        <DrawerListItem nameItem='Admins' />
       </List>
     </Drawer>
   );
