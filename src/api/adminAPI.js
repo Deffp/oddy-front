@@ -3,7 +3,10 @@ import axios from 'axios';
 import { API_BASE_URL } from "../config";
 
 class adminAPI {
-  instance = axios.create({ baseURL: API_BASE_URL  });
+  instance = axios.create({ 
+    baseURL: API_BASE_URL, 
+    headers: { Authorization: sessionStorage.getItem('token') }
+  });
 
   async getGoogleAuthURL() {
     const response = await this.instance('/google/authUrl');
@@ -23,22 +26,20 @@ class adminAPI {
     return adminList;
   }
 
-  async addingAdmin(admin , token) {
-    const config = { headers: { Authorization: token }};
-    await this.instance.post('/admins', {
+  async addingAdmin(admin) {
+    const newAdmin = await this.instance.post('/admins', {
       email: admin,
-      config,
     });
+    return newAdmin;
   }
 
-  async removeAdmin(admin, token) {
-    const config = { headers: { Authorization: token }};
-    await this.instance.delete('/admins', {
+  async removeAdmin(admin) {
+    const removeAdmin = await this.instance.delete('/admins', {
       data: {
         email: admin,
-        config,
       }
     });
+    return removeAdmin;
   } 
 }
 
